@@ -42,6 +42,7 @@
 #include "sysemu/sysemu.h"
 #include "hw/pci/pci.h"
 #include "hw/pci-host/gpex.h"
+#include "hw/butter_robot/butter_robot.h"
 
 #if defined(TARGET_RISCV32)
 # define BIOS_FILENAME "opensbi-riscv32-generic-fw_dynamic.bin"
@@ -65,6 +66,7 @@ static const struct MemmapEntry {
     [VIRT_FLASH] =       { 0x20000000,     0x4000000 },
     [VIRT_PCIE_ECAM] =   { 0x30000000,    0x10000000 },
     [VIRT_PCIE_MMIO] =   { 0x40000000,    0x40000000 },
+    [VIRT_BUTTER_ROBOT]= { 0x50000000,         0x100 },
     [VIRT_DRAM] =        { 0x80000000,           0x0 },
 };
 
@@ -677,6 +679,8 @@ static void virt_machine_init(MachineState *machine)
                          memmap[VIRT_PCIE_MMIO].size,
                          memmap[VIRT_PCIE_PIO].base,
                          DEVICE(pcie_plic), true);
+
+    br_create(system_memory, memmap[VIRT_BUTTER_ROBOT].base);
 
     serial_mm_init(system_memory, memmap[VIRT_UART0].base,
         0, qdev_get_gpio_in(DEVICE(mmio_plic), UART0_IRQ), 399193,

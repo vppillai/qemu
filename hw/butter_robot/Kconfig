@@ -1,0 +1,2 @@
+config BUTTER_ROBOT
+    bool
