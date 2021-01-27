@@ -53,3 +53,4 @@ brState *br_create(MemoryRegion *address_space, hwaddr base)
     memory_region_add_subregion(address_space, base, &s->mmio);
     return s;
 }
+
